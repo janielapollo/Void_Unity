@@ -4,48 +4,51 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class MainmenuManager : MonoBehaviour {
-    private GameObject [] menus;
-    private GameObject back;
-    private GameObject [] score;
+    public GameObject [] menus;
+    public GameObject [] score;
+    public GameObject back;
 
     private float currentscore;
     public Text bestscore;
     // Use this for initialization
     void Start () {
-        menus = GameObject.FindGameObjectsWithTag ("Menu");
-        back = GameObject.Find ("Back");
-        score = GameObject.FindGameObjectsWithTag ("Highscore");
-        bestscore = GameObject.Find("Score").GetComponent<Text> ();
-        foreach (GameObject h in score) {
-            h.SetActive (false);
-        }
-        back.SetActive (false);
+
+        bestscore.GetComponent<Text>();
+        ToggleScore(false); //To make sure the highscore menu is disable
+        
     }
 	
     public void Play () {
         SceneManager.LoadScene (1);
     }
-    public void GoToHighscore () {
+    public void Highscore () {
 
-        foreach (GameObject m in menus) {
-            m.SetActive (false);
-        }
-        
-        back.SetActive (true);
-        foreach (GameObject h in score) {
-            h.SetActive (true);
-        }
+        ToggleMenu(false);
+        ToggleScore(true);
+
+        //Score Updater!
         currentscore = (int)PlayerPrefs.GetFloat ("Highscore");
         bestscore.text =  currentscore.ToString();
 
     }
     public void Back () {
-        foreach (GameObject m in menus) {
-            m.SetActive (true);
+        ToggleMenu(true);
+        ToggleScore(false);
+
+    }
+    public void ToggleMenu(bool value)
+    {
+        foreach (GameObject m in menus)
+        {
+            m.SetActive(value);
         }
-        foreach (GameObject h in score) {
-            h.SetActive (false);
+    }
+    public void ToggleScore(bool value)
+    {
+        foreach (GameObject h in score)
+        {
+            h.SetActive(value);
         }
-        back.SetActive (false);
+        back.SetActive(value);
     }
 }
